@@ -47,8 +47,10 @@ jobs:
       
 publish:
   runs-on: ubuntu-lates
+  needs: build 
   steps:
       - name: create release
+        id: create-release
         uses: actions/create
         env: 
           GITHUB_TOKEN: ${{ SECRETA.GITHUB_TOKEN }}
@@ -57,4 +59,19 @@ publish:
           body: New release for ${{ github.sha }}. Release notes on the documentation site
           draft: false
           prerelease: false
+      - name: download artifact
+        uses: actions/download-artifact@v2
+        with: 
+          name: zipped-bundle
+      - name: upload release asset
+        uses: actions/upload-release-asset
+        env:
+          GITHUB_TOKEN: ${{ SECRETA.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./${{ github.sha }}.zip
+          asset_name: source_code_with_libraries.zip
+          asset_content_type: application/zip
+          
+          
           
