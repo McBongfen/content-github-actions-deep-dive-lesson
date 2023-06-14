@@ -44,3 +44,31 @@ jobs:
         with:
           name: zipped-bundle
           path: ${{ github.sha }}.zip
+      
+publish:
+  runs-on: ubuntu-lates
+  steps:
+      - name: create release
+        uses: actions/create
+        env: 
+          GITHUB_TOKEN: ${{ SECRETA.GITHUB_TOKEN }}
+        with: 
+          tag_name: ${{ github.run_number }}
+          body: New release for ${{ github.sha }}. Release notes on the documentation site
+          draft: false
+          prerelease: false
+          
+          
+`
+ 
+  
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
